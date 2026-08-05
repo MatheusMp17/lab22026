@@ -4,32 +4,25 @@
 #include <stdlib.h>
 #include <time.h>
 typedef struct timespec crono;
+typedef enum { JOGO_MENU, JOGO_DIURNO, JOGO_NOTURNO, JOGO_TUTORIAL, JOGO_VITORIA, JOGO_DERROTA } EstadoJogo;
 
-// implementação de um cronômetro
-typedef struct timespec crono;
+typedef struct {
+    EstadoJogo estado_atual;
+    int pontos; 
+    int qtdTiros;
+    int qtdInimigos;
+    int inimigos_na_tela;
+    char nome_jogador[3];   
+    int escudos;
+    int arma;
+    time_t tempo_inicio;
+    int tempo_de_jogo;
+    int fases_passadas;
+    int partidas_jogadas;
+    bool existe_historico;
+    int recorde;
+} ControleJogo;
 
-// inicializa um cronômetro com a hora atual
-// void crono_inicia(crono *c)
-// {
-//     clock_gettime(CLOCK_MONOTONIC, c);
-// }
-
-// // retorna o tempo passado desde que o cronômetro *c foi iniciado, em segundos
-// double crono_parcial(crono *c)
-// {
-//     crono agora;
-//     clock_gettime(CLOCK_MONOTONIC, &agora);
-
-//     double segundos = agora.tv_sec - c->tv_sec;
-//     double nanosegundos = agora.tv_nsec - c->tv_nsec;
-//     return segundos + 1e-9 * nanosegundos;
-// }
-
-int f(int x)
-{
-    if (x <= 0) return 0;
-    return f(x - 1);
-}
 // configura o terminal para o modo "cru", para permitir a leitura
 //   de cada caractere digitado sem esperar pelo "enter".
 void configura_terminal()
@@ -61,39 +54,22 @@ char lechar()
     if (fread(&c, 1, 1, stdin) == 1) return c;
     return 0;
 }
-
-// int main()
-// {
-//     configura_terminal();
-//     for (;;) {
-//         int c = lechar();
-//         printf("%d\n", c);
-//         if (c == 'q') break;
-//     }
-//     normaliza_terminal();
-// }
 int main() {
-    configura_terminal();
-    char u = 0;
-    int n = 0;
-    do {
-        char c = lechar();
-        if (c != 0) {
-            u = c;
-            n = 0;
-        }
-        n++;
-        printf("leituras: %d  ult ch: %d   \r", n, c);
-    } while (u != 'q');
-    normaliza_terminal();
-        crono c1;
-    //crono_inicia(&c);
-    f(1000);
-    //double t1 = crono_parcial(&c);
-    f(2000);
-    // double t2 = crono_parcial(&c);
-    // printf("f(1000) demorou %f segundos.\n", t1);
-    // printf("f(2000) demorou %f segundos.\n", t2 - t1);
-    system("aplay -q x.3.wav 2.3.wav");
-    return 0;
+  
+  return 0;
+}
+void inicializa_estado(controleJogo *controle, char nome[]){
+	controle.pontos = 0;
+	controle.escudos = 3;
+	controle.estado_atual = ESTADO_MENU;
+	controle.qtdTiros = 30;
+	controle.qtdInimigos = 20;
+	controle.nome_jogador = nome;
+	controle.tempo_inicio = 0;
+	controle.tempo_de_jogo = 0;
+	controle.fases_passadas = 0;
+	controle.partidas_jogadas = 0;
+	controle.existe_historico = false;
+	controle.recorde = 0;
+
 }
